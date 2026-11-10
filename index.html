@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="theme-color" content="#101619" />
+  <title>ÚLTIMO REFUGIO — Zombie Survival</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="game-shell">
+    <canvas id="game" aria-label="Juego de supervivencia zombi"></canvas>
+    <div class="vignette"></div>
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="Último Refugio"><span class="brand-mark">✳</span><span>ÚLTIMO<br><b>REFUGIO</b></span></a>
+      <div class="run-stats">
+        <div class="stat"><span class="stat-label">TIEMPO</span><strong id="timer">00:00</strong></div>
+        <div class="stat"><span class="stat-label">OLEADA</span><strong id="wave">01</strong></div>
+        <div class="stat kills-stat"><span class="stat-label">ELIMINADOS</span><strong id="kills">000</strong></div>
+      </div>
+      <button class="sound-button" id="soundBtn" aria-label="Activar o silenciar sonido">♫ <span>SONIDO</span></button>
+    </header>
+
+    <section class="left-hud">
+      <div class="survivor-card">
+        <div class="avatar">✦<i></i></div>
+        <div class="survivor-info"><span class="eyebrow">SUPERVIVIENTE</span><strong id="heroName">LA NÓMADA</strong><span class="evolution" id="evolution">HUMANA · NIVEL 1</span></div>
+      </div>
+      <div class="bar-wrap health-wrap"><div class="bar-caption"><span>♥ &nbsp;SALUD</span><b id="healthText">100 / 100</b></div><div class="meter"><i id="healthBar"></i></div></div>
+      <div class="bar-wrap xp-wrap"><div class="bar-caption"><span>✦ &nbsp;EXPERIENCIA</span><b id="levelText">NIV. 1</b></div><div class="meter"><i id="xpBar"></i></div></div>
+      <div class="weapon-chip"><span id="weaponIcon">✣</span><div><small>ARMA ACTIVA</small><b id="weaponName">PISTOLA</b></div><em id="weaponLevel">NV. 1</em></div>
+    </section>
+
+    <section class="right-hud">
+      <div class="mini-label"><span class="pulse-dot"></span> SEÑAL DE EMERGENCIA <b>ACTIVA</b></div>
+      <div class="objective"><small>OBJETIVO ACTUAL</small><strong id="objective">SOBREVIVE</strong><span>La extracción no llegará sola.</span></div>
+      <div class="threat-card"><span class="threat-icon">☠</span><div><small>AMENAZA</small><b id="threat">CONTENIDA</b></div><div class="threat-bars"><i></i><i></i><i></i><i></i><i></i></div></div>
+    </section>
+
+    <div class="boss-alert" id="bossAlert"><span>☠</span><div><small>AMENAZA DE ÉLITE</small><b>EL BRUTO</b></div><em>ACABA CON ÉL</em></div>
+
+    <div class="bottom-hud">
+      <div class="tip"><span>✧</span> <b>CONSEJO</b> <i id="tipText">No dejes que te rodeen.</i></div>
+      <div class="controls-legend"><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd><span>MOVER</span><i>·</i><kbd>ESPACIO</kbd><span>PAUSA</span></div>
+      <div class="mobile-hint">ARRASTRA PARA MOVER</div>
+    </div>
+    <div class="joystick" id="joystick"><div class="joy-ring"><div class="joy-knob" id="joyKnob"></div></div></div>
+    <button class="mobile-pause" id="pauseBtn">Ⅱ</button>
+
+    <div class="overlay intro-overlay" id="introOverlay">
+      <div class="intro-copy"><div class="pretitle"><span></span> CIUDAD DE SAN LÁZARO · DÍA 07</div><h1>EL FIN<br>NO ES <i>EL FINAL.</i></h1><p>La ciudad cayó. Tú todavía no.<br>Enfréntate a la horda, evoluciona y encuentra la salida.</p><div class="intro-meta"><span>☠ &nbsp;HORDA INFINITA</span><span>✦ &nbsp;EVOLUCIONA</span><span>⌖ &nbsp;DISPARO AUTOMÁTICO</span></div></div>
+      <div class="intro-action"><div class="difficulty"><span class="difficulty-dot"></span><div><b>SUPERVIVENCIA</b><small>UNA VIDA. NINGÚN REFUERZO.</small></div><span class="difficulty-arrow">↗</span></div><button class="primary-button" id="startBtn"><span>COMENZAR PARTIDA</span><b>→</b></button><div class="controls-note"><span>⌨ WASD</span><i>·</i><span>☝ TOUCH</span><i>·</i><span>⚙ AUTO-AIM</span></div></div>
+      <div class="version-tag">PROTOCOLO 07 <i>—</i> BUILD 1.4.0</div>
+    </div>
+
+    <div class="overlay choice-overlay hidden" id="choiceOverlay"><div class="choice-panel"><div class="level-up-label"><span>✦</span> EVOLUCIÓN DISPONIBLE <span>✦</span></div><h2>ELIGE TU <i>MEJORA</i></h2><p>La horda no espera. Escoge sabiamente.</p><div class="upgrade-cards" id="upgradeCards"></div><div class="reroll-note">NIVEL <b id="choiceLevel">2</b> &nbsp;·&nbsp; TU ELECCIÓN CAMBIA LA PARTIDA</div></div></div>
+
+    <div class="overlay pause-overlay hidden" id="pauseOverlay"><div class="pause-panel"><span class="pause-symbol">Ⅱ</span><div class="pretitle">REFUGIO TEMPORAL</div><h2>PAUSA <i>TÁCTICA</i></h2><p>Respira. Revisa tu equipo.</p><button class="primary-button" id="resumeBtn"><span>VOLVER A LA ACCIÓN</span><b>→</b></button><div class="pause-controls">WASD / JOYSTICK &nbsp;·&nbsp; DISPARO AUTOMÁTICO</div></div></div>
+
+    <div class="overlay end-overlay hidden" id="endOverlay"><div class="end-panel"><div class="pretitle">FIN DE TRANSMISIÓN</div><h2 id="endTitle">HAS CAÍDO.</h2><p id="endSub">La ciudad aún te necesita.</p><div class="run-summary"><div><small>SUPERVIVENCIA</small><b id="finalTime">00:00</b></div><div><small>ELIMINADOS</small><b id="finalKills">0</b></div><div><small>NIVEL</small><b id="finalLevel">1</b></div></div><button class="primary-button" id="restartBtn"><span>INTENTAR DE NUEVO</span><b>↻</b></button></div></div>
+
+    <div class="toast" id="toast"></div>
+  </main>
+  <script src="game.js"></script>
+</body>
+</html>
