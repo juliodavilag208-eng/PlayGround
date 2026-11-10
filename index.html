@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0a0a13" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230a0a13'/%3E%3Cpath d='M18 45V19h8l10 15V19h10v26h-8L28 30v15z' fill='%23a98bff'/%3E%3C/svg%3E" />
+  <title>RITMO — juega tu música</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="Ritmo inicio"><span class="brand-mark"><i></i><i></i><i></i><i></i></span>RITMO<span class="brand-dot">.</span></a>
+      <div class="top-right"><span class="local-badge"><span></span> 100% EN TU DISPOSITIVO</span><button class="icon-btn" id="soundToggle" aria-label="Activar sonido" title="Activar sonido">♫</button></div>
+    </header>
+
+    <main>
+      <section id="home" class="home-view">
+        <div class="hero-copy">
+          <div class="eyebrow"><span class="eyebrow-line"></span> TU MÚSICA. TU RITMO.</div>
+          <h1>Haz que cada<br>beat <span>cuente.</span></h1>
+          <p class="hero-sub">Convierte tus canciones favoritas en un desafío de ritmo. Importa una canción y deja que la música marque el camino.</p>
+          <div class="hero-actions">
+            <button class="primary-btn" id="uploadBtn"><span class="upload-icon">↥</span> Importar canción <span class="btn-arrow">↗</span></button>
+            <button class="text-btn" id="demoBtn"><span class="play-small">▶</span> Probar con una demo</button>
+            <input id="fileInput" type="file" accept="audio/*,.mp3,.wav,.ogg,.m4a,.aac,.flac" hidden>
+          </div>
+          <div class="format-note"><span>♪</span> MP3, WAV, OGG, M4A <b>·</b> El audio no sale de tu dispositivo</div>
+        </div>
+
+        <div class="game-preview" aria-label="Vista previa del juego">
+          <div class="preview-head"><div><span class="live-dot"></span> EN VIVO <span class="preview-track">/ VISUALIZACIÓN</span></div><span class="preview-bpm">♩ &nbsp;120 BPM</span></div>
+          <div class="preview-board">
+            <div class="preview-glow"></div>
+            <div class="lane-divider"></div><div class="lane-divider"></div><div class="lane-divider"></div>
+            <div class="preview-tile tile-a"></div><div class="preview-tile tile-b"></div><div class="preview-tile tile-c"></div><div class="preview-tile tile-d"></div>
+            <div class="hit-line"><span>TOCA AL COMPÁS</span></div>
+            <div class="lane-labels"><span>A</span><span>S</span><span>D</span><span>F</span></div>
+          </div>
+          <div class="preview-footer"><span><b>01</b> / ELIGE UNA CANCIÓN</span><span><b>02</b> / SIGUE EL BEAT</span><span><b>03</b> / BATE TU RÉCORD</span></div>
+          <div class="float-chip chip-score"><span class="chip-icon">✦</span><div><small>MEJOR RACHA</small><b>× 24</b></div></div>
+          <div class="float-chip chip-perfect"><span>PERFECT</span><b>+100</b></div>
+        </div>
+
+        <div class="feature-row">
+          <div class="feature"><span class="feature-icon">◉</span><div><b>Tu biblioteca</b><small>Juega con cualquier canción</small></div></div>
+          <div class="feature"><span class="feature-icon feature-purple">⌁</span><div><b>Ritmo inteligente</b><small>Beats detectados automáticamente</small></div></div>
+          <div class="feature"><span class="feature-icon feature-pink">⌗</span><div><b>3 dificultades</b><small>De chill a modo experto</small></div></div>
+          <div class="feature"><span class="feature-icon feature-green">◎</span><div><b>Hecho para móvil</b><small>Toca, juega y siente el beat</small></div></div>
+        </div>
+      </section>
+
+      <section id="setup" class="setup-view hidden">
+        <button class="back-btn" id="backBtn">← <span>Volver</span></button>
+        <div class="setup-grid">
+          <div class="track-art"><div class="art-orbit orbit-one"></div><div class="art-orbit orbit-two"></div><div class="art-bars"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="art-note">♫</div><div class="art-label">RITMO <span>SESSION</span></div></div>
+          <div class="setup-details">
+            <div class="eyebrow"><span class="eyebrow-line"></span> NUEVA SESIÓN</div>
+            <h2 id="trackName">Midnight Drive</h2><p class="track-meta" id="trackMeta">Demo original <span>·</span> 120 BPM <span>·</span> 1:00</p>
+            <div class="analysis-status" id="analysisStatus"><span class="status-pulse"></span><span id="statusText">Ritmo detectado</span><span class="status-check">✓</span></div>
+            <div class="difficulty-label"><span>DIFICULTAD</span><span>El ritmo se mantiene. El reto cambia.</span></div>
+            <div class="difficulty-list" role="radiogroup" aria-label="Dificultad">
+              <button class="difficulty-card selected" data-difficulty="easy"><span class="diff-check">✓</span><span class="diff-icon easy-icon">◌</span><span class="diff-text"><b>Tranquilo</b><small>2 carriles · para entrar en ritmo</small></span><span class="diff-level">01</span></button>
+              <button class="difficulty-card" data-difficulty="normal"><span class="diff-check">✓</span><span class="diff-icon normal-icon">⌁</span><span class="diff-text"><b>En marcha</b><small>3 carriles · un poco más de flow</small></span><span class="diff-level">02</span></button>
+              <button class="difficulty-card" data-difficulty="hard"><span class="diff-check">✓</span><span class="diff-icon hard-icon">⌘</span><span class="diff-text"><b>A tope</b><small>4 carriles · cada beat cuenta</small></span><span class="diff-level">03</span></button>
+            </div>
+            <button class="primary-btn start-btn" id="startBtn">Empezar a jugar <span class="btn-arrow">↗</span></button>
+            <p class="keyboard-hint">TECLADO <kbd>A</kbd><kbd>S</kbd><kbd>D</kbd><kbd>F</kbd> O TOCA LOS CARRILES</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="game" class="game-view hidden">
+        <div class="game-top"><button class="back-btn" id="quitBtn">← <span>Salir</span></button><div class="now-playing"><span class="playing-bars"><i></i><i></i><i></i></span><div><b id="playingTitle">Midnight Drive</b><small id="playingDifficulty">TRANQUILO</small></div></div><div class="game-stats"><div><small>PUNTOS</small><b id="score">000000</b></div><div><small>RACHA</small><b id="combo">× 0</b></div></div></div>
+        <div class="game-progress"><div id="progressFill"></div></div>
+        <div class="game-stage">
+          <div class="game-side side-left"><small>PRECISIÓN</small><strong id="accuracy">100<span>%</span></strong><div class="accuracy-bar"><i id="accuracyFill"></i></div><small class="side-label">PERFECT <b id="perfectCount">0</b></small><small class="side-label">MISS <b id="missCount">0</b></small></div>
+          <div class="playfield" id="playfield"><div class="game-lanes" id="gameLanes"></div><div class="game-tiles" id="gameTiles"></div><div class="game-hit-line" id="gameHitLine"><span id="judgement">¡LISTO!</span></div><div class="lane-keys" id="laneKeys"></div><div class="countdown hidden" id="countdown">3</div></div>
+          <div class="game-side side-right"><small>BEAT</small><div class="beat-indicator"><i></i><i></i><i></i><i></i></div><strong id="bpmDisplay">120 <span>BPM</span></strong><small class="side-label" id="remaining">01:00 RESTANTES</small><button class="pause-btn" id="pauseBtn">Ⅱ &nbsp; PAUSA</button></div>
+          <button class="pause-btn mobile-pause" id="mobilePauseBtn" aria-label="Pausar juego">Ⅱ</button>
+        </div>
+        <div class="mobile-game-info"><span id="mobileScore">000000 PTS</span><span id="mobileCombo">× 0 RACHA</span><span id="mobileAccuracy">100% PRECISIÓN</span></div>
+        <p class="game-tip">PULSA CUANDO LA NOTA CRUCE LA LÍNEA <span>·</span> <kbd>A</kbd><kbd>S</kbd><kbd>D</kbd><kbd>F</kbd></p>
+      </section>
+    </main>
+    <footer><span>© 2025 RITMO<span class="brand-dot">.</span></span><span>HECHO PARA SENTIR LA MÚSICA <b>♥</b></span></footer>
+  </div>
+  <div id="resultModal" class="modal hidden" role="dialog" aria-modal="true"><div class="result-card"><button class="modal-close" id="closeResult">×</button><div class="result-spark">✦</div><div class="eyebrow">SESIÓN COMPLETADA</div><h2 id="resultHeadline">¡Buen ritmo!</h2><p id="resultSong">Midnight Drive · Tranquilo</p><div class="result-score"><small>PUNTUACIÓN FINAL</small><b id="finalScore">000000</b></div><div class="result-stats"><div><b id="finalAccuracy">100%</b><small>PRECISIÓN</small></div><div><b id="finalCombo">× 0</b><small>MEJOR RACHA</small></div><div><b id="finalPerfect">0</b><small>PERFECT</small></div></div><button class="primary-btn" id="playAgain">Jugar otra vez <span class="btn-arrow">↗</span></button><button class="text-btn result-home" id="homeBtn">Volver al inicio</button></div></div>
+  <div id="toast" class="toast"></div>
+  <script src="game.js"></script>
+</body>
+</html>
