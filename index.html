@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#06080f" />
+    <meta
+      name="description"
+      content="Pulse Tiles: un juego de ritmo con cuatro carriles, notas largas, velocidad adaptativa y análisis automático de tu música."
+    />
+    <title>Pulse Tiles — Rhythm Game</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23080b13'/%3E%3Cpath d='M17 42V22h7v20zm12 5V17h7v30zm12-9V26h7v12z' fill='%2356e6ff'/%3E%3C/svg%3E" />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div class="ambient ambient-cyan" aria-hidden="true"></div>
+    <div class="ambient ambient-violet" aria-hidden="true"></div>
+    <div class="ambient ambient-amber" aria-hidden="true"></div>
+    <div class="grid-plane" aria-hidden="true"></div>
+
+    <div class="app">
+      <header class="site-header">
+        <a class="brand" href="#" aria-label="Pulse Tiles, inicio">
+          <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+          <span class="brand-copy">
+            <strong>PULSE<span>TILES</span></strong>
+            <small>RHYTHM ENGINE</small>
+          </span>
+        </a>
+        <div class="header-actions">
+          <span class="system-pill"><i></i> WEB AUDIO</span>
+          <button class="icon-button sound-toggle" type="button" aria-label="Silenciar sonido" title="Silenciar sonido">
+            <svg class="icon-sound" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M4 9.5v5h4l5 4v-13l-5 4H4Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+              <path class="sound-waves" d="M16 8.2a5 5 0 0 1 0 7.6M18.4 5.6a8.4 8.4 0 0 1 0 12.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+              <path class="mute-slash" d="m16 9 5 6m0-6-5 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+            </svg>
+          </button>
+          <button class="icon-button" id="helpButton" type="button" aria-label="Cómo jugar" title="Cómo jugar">?</button>
+        </div>
+      </header>
+
+      <main class="home-screen" id="homeScreen">
+        <section class="hero" aria-labelledby="heroTitle">
+          <div class="hero-copy">
+            <div class="eyebrow"><span></span> RHYTHM / REACTION / FLOW</div>
+            <h1 id="heroTitle">Siente el <em>ritmo.</em><br />Domina cada tile.</h1>
+            <p class="hero-description">
+              Cuatro carriles. Tu música. Un pulso que no espera. Toca las notas cortas,
+              sostén las largas y sobrevive a cuatro niveles de caos.
+            </p>
+          </div>
+
+          <div class="hero-board" aria-hidden="true">
+            <div class="hero-board-top">
+              <span><i class="live-dot"></i> LIVE ENGINE</span>
+              <span>SYNC <b>98%</b></span>
+            </div>
+            <div class="mini-stage">
+              <div class="mini-lane-lines"></div>
+              <span class="mini-note mini-note-a lane-1"></span>
+              <span class="mini-note mini-note-b lane-3"></span>
+              <span class="mini-note mini-note-c lane-0"></span>
+              <span class="mini-note mini-note-d lane-2"></span>
+              <span class="mini-note mini-note-e lane-1"></span>
+              <span class="mini-hold lane-3"><i></i></span>
+              <span class="mini-hitline"></span>
+              <div class="mini-keys"><span>D</span><span>F</span><span>J</span><span>K</span></div>
+            </div>
+          </div>
+
+          <div class="hero-facts">
+            <span><strong>04</strong> carriles</span>
+            <span><strong>02</strong> tipos de nota</span>
+            <span><strong>∞</strong> pistas propias</span>
+          </div>
+        </section>
+
+        <section class="console" aria-label="Configura tu partida">
+          <section class="panel track-panel" aria-labelledby="tracksTitle">
+            <div class="panel-head">
+              <span class="step-index">01</span>
+              <h2 id="tracksTitle">Elige tu pista</h2>
+              <span class="panel-meta" id="trackCount">4 pistas</span>
+            </div>
+            <div class="track-grid" id="trackGrid"></div>
+            <button class="import-button" id="importButton" type="button">
+              <span class="import-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M12 16V4m0 0L7.5 8.5M12 4l4.5 4.5M5 15.5v3A1.5 1.5 0 0 0 6.5 20h11a1.5 1.5 0 0 0 1.5-1.5v-3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+              <span><strong>Importa tu música</strong><small>MP3, WAV, OGG, M4A o FLAC · análisis local</small></span>
+              <span class="import-plus">+</span>
+            </button>
+          </section>
+
+          <section class="panel diff-panel" aria-labelledby="diffTitle">
+            <div class="panel-head">
+              <span class="step-index">02</span>
+              <h2 id="diffTitle">Marca el desafío</h2>
+              <span class="diff-badge" id="diffBadge">Normal</span>
+            </div>
+            <div class="diff-grid" id="diffGrid"></div>
+          </section>
+
+          <section class="launch-bar" aria-label="Iniciar partida">
+            <div class="launch-copy">
+              <span class="launch-label">SETLISTO</span>
+              <strong id="summaryTrack">Aurora Drive</strong>
+              <span id="summaryMeta">128 notas · 19 holds</span>
+            </div>
+            <div class="launch-speed">
+              <span>VELOCIDAD</span>
+              <strong id="summarySpeed">Caída 2.46 s</strong>
+            </div>
+            <button class="play-button" id="playButton" type="button">
+              <span class="play-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5-11-6.5Z" fill="currentColor"/></svg>
+              </span>
+              <span class="play-copy"><strong>INICIAR RUN</strong><small>D · F · J · K</small></span>
+            </button>
+          </section>
+        </section>
+      </main>
+
+      <main class="game-screen" id="gameScreen" hidden>
+        <header class="game-topbar">
+          <button class="icon-button game-back" id="gameBackButton" type="button" aria-label="Volver / pausar">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14.5 5-7 7 7 7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="game-now">
+            <span class="now-label"><i></i> EN VIVO</span>
+            <div class="game-now-copy">
+              <strong id="gameTrackTitle">Aurora Drive</strong>
+              <span id="gameTrackArtist">Pulse Lab</span>
+            </div>
+          </div>
+          <div class="game-top-actions">
+            <span class="game-diff-pill" id="gameDiffPill">Normal</span>
+            <button class="icon-button game-pause" id="gamePauseButton" type="button" aria-label="Pausar">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6v12M16 6v12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+            </button>
+          </div>
+        </header>
+
+        <div class="game-hud">
+          <div class="hud-stat hud-score">
+            <span>PUNTOS</span>
+            <strong id="scoreValue">0</strong>
+          </div>
+          <div class="hud-center">
+            <div class="progress-track"><span class="progress-fill" id="progressFill"></span></div>
+            <div class="hud-time-row">
+              <span id="timeValue">0:00 / 1:00</span>
+              <span class="hud-key-hint">D F J K</span>
+            </div>
+          </div>
+          <div class="hud-stat hud-combo" id="hudCombo">
+            <span>COMBO</span>
+            <strong><small>x</small><b id="comboValue">0</b></strong>
+          </div>
+          <div class="hud-stat hud-accuracy">
+            <span>PRECISIÓN</span>
+            <strong id="accuracyValue">100.0%</strong>
+          </div>
+        </div>
+
+        <div class="stage" id="stage">
+          <canvas id="gameCanvas" aria-label="Pista de juego"></canvas>
+          <div class="countdown is-hidden" id="countdown" aria-hidden="true">
+            <span>PREPÁRATE</span>
+            <strong id="countdownNumber">3</strong>
+            <small>Las notas largas se mantienen</small>
+          </div>
+        </div>
+
+        <div class="key-strip" id="keyStrip" aria-label="Teclas de los carriles">
+          <button class="key-pad" type="button" data-lane="0" style="--lane-color:#43d9ff">
+            <span class="key-letter">D</span><span class="key-label">TAP / HOLD</span>
+          </button>
+          <button class="key-pad" type="button" data-lane="1" style="--lane-color:#a7ff66">
+            <span class="key-letter">F</span><span class="key-label">TAP / HOLD</span>
+          </button>
+          <button class="key-pad" type="button" data-lane="2" style="--lane-color:#b391ff">
+            <span class="key-letter">J</span><span class="key-label">TAP / HOLD</span>
+          </button>
+          <button class="key-pad" type="button" data-lane="3" style="--lane-color:#ff7cbb">
+            <span class="key-letter">K</span><span class="key-label">TAP / HOLD</span>
+          </button>
+        </div>
+      </main>
+    </div>
+
+    <div class="overlay" id="loadingOverlay" hidden>
+      <div class="modal-card loading-card" role="status" aria-live="polite">
+        <div class="loading-eq" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        <span class="eyebrow"><span></span> AUDIO ENGINE</span>
+        <h2 id="loadingTitle">Sintetizando pista</h2>
+        <p id="loadingText">La primera vez puede tardar unos segundos…</p>
+        <div class="loading-bar"><span></span></div>
+      </div>
+    </div>
+
+    <div class="overlay" id="pauseOverlay" hidden>
+      <div class="modal-card pause-card" role="dialog" aria-modal="true" aria-labelledby="pauseTitle">
+        <span class="eyebrow"><span></span> PAUSA</span>
+        <h2 id="pauseTitle">El pulso puede esperar.</h2>
+        <p>Respira, ajusta el sonido y vuelve cuando estés listo.</p>
+        <div class="pause-actions">
+          <button class="btn btn-primary" type="button" data-pause-resume>Reanudar</button>
+          <button class="btn btn-ghost" type="button" data-pause-restart>Reiniciar</button>
+          <button class="btn btn-ghost sound-toggle pause-sound" type="button" data-pause-sound>Sonido</button>
+          <button class="btn btn-ghost" type="button" data-pause-home>Elegir pista</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="overlay" id="resultsOverlay" hidden>
+      <div class="modal-card results-card" role="dialog" aria-modal="true" aria-labelledby="resultTitle">
+        <span class="new-record" id="newRecord" hidden>NUEVO RÉCORD</span>
+        <div class="results-head">
+          <div class="result-grade" id="resultGrade">A</div>
+          <div class="results-title">
+            <span class="eyebrow"><span></span> RUN COMPLETA</span>
+            <h2 id="resultTitle">Buen pulso.</h2>
+            <p><strong id="resultTrack">Aurora Drive</strong><span>·</span><span id="resultSubline">Normal · Pulse Lab</span></p>
+            <span class="result-grade-label" id="resultGradeLabel">Gran control</span>
+          </div>
+          <div class="result-score">
+            <span>PUNTOS</span>
+            <strong id="resultScore">0</strong>
+            <small id="resultBest">MEJOR · 0</small>
+          </div>
+        </div>
+
+        <div class="result-stats">
+          <div><span>PRECISIÓN</span><strong id="resultAccuracy">100.0%</strong></div>
+          <div><span>COMBO MÁX.</span><strong id="resultCombo">x0</strong></div>
+          <div><span>HOLDS</span><strong id="resultHolds">0/0</strong></div>
+        </div>
+
+        <div class="judgement-grid">
+          <div class="judgement perfect"><span>PERFECT</span><strong id="resultPerfect">0</strong></div>
+          <div class="judgement great"><span>GREAT</span><strong id="resultGreat">0</strong></div>
+          <div class="judgement good"><span>GOOD</span><strong id="resultGood">0</strong></div>
+          <div class="judgement miss"><span>MISS</span><strong id="resultMiss">0</strong></div>
+        </div>
+
+        <div class="results-actions">
+          <button class="btn btn-primary" id="resultRetry" type="button" data-result-retry>Reintentar</button>
+          <button class="btn btn-ghost" type="button" data-result-home>Cambiar pista</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="overlay" id="importModal" hidden>
+      <div class="modal-card import-card" id="importModalCard" role="dialog" aria-modal="true" aria-labelledby="importTitleHeading">
+        <button class="modal-close" id="closeImport" type="button" aria-label="Cerrar">×</button>
+        <span class="eyebrow"><span></span> LOCAL IMPORT</span>
+        <h2 id="importTitleHeading">Tu música, tus reglas.</h2>
+        <p class="modal-intro">Analizamos el ritmo en tu navegador y generamos los tiles. El archivo nunca sale de tu dispositivo.</p>
+
+        <div class="import-step" id="chooseStep">
+          <div class="drop-zone" id="dropZone" role="button" tabindex="0" aria-label="Seleccionar archivo de audio">
+            <span class="drop-icon" aria-hidden="true">
+              <svg viewBox="0 0 32 32"><path d="M6 22v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2M16 5v17m0 0-6-6m6 6 6-6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            <strong>Arrastra tu audio aquí</strong>
+            <span>o <b>elige un archivo</b> del dispositivo</span>
+            <small>MP3 · WAV · OGG · M4A · FLAC — hasta 40 MB</small>
+          </div>
+          <input type="file" id="fileInput" accept="audio/*,.mp3,.wav,.ogg,.m4a,.aac,.flac,.opus" hidden />
+          <p class="import-error" id="importError" role="alert"></p>
+          <div class="import-footnote"><span></span> Detección de tempo, ataques y notas sostenidas</div>
+        </div>
+
+        <div class="import-step" id="analyzeStep" hidden>
+          <div class="analyze-file">
+            <span class="analyze-icon" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+            <div>
+              <strong id="analyzeName">pista.mp3</strong>
+              <span id="analyzeStatus">Leyendo espectro…</span>
+            </div>
+            <span class="analyze-spinner" aria-hidden="true"></span>
+          </div>
+          <div class="analyze-bar"><span id="analyzeProgress"></span></div>
+          <div class="analyze-steps">
+            <span>DECODIFICAR</span><span>DETECTAR PULSO</span><span>CREAR MAPA</span>
+          </div>
+        </div>
+
+        <div class="import-step" id="successStep" hidden>
+          <div class="detected-head"><span class="success-check">✓</span><strong>Pista analizada</strong></div>
+          <div class="detected-grid">
+            <div><span>TEMPO</span><strong id="detectBpm">120 BPM</strong></div>
+            <div><span>DURACIÓN</span><strong id="detectDuration">0:00</strong></div>
+            <div><span>ATAQUES</span><strong id="detectOnsets">0</strong></div>
+            <div><span>CONFIANZA</span><strong id="detectConfidence">0%</strong></div>
+          </div>
+          <label class="field-label" for="importTitle">Nombre de la pista</label>
+          <input class="text-input" id="importTitle" type="text" maxlength="46" autocomplete="off" />
+          <div class="import-actions">
+            <button class="btn btn-primary" id="addAndPlay" type="button">Añadir y jugar</button>
+            <button class="btn btn-ghost" id="addOnly" type="button">Solo añadir</button>
+            <button class="text-button" id="importAgain" type="button">Cambiar archivo</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="overlay" id="helpOverlay" hidden>
+      <div class="modal-card help-card" role="dialog" aria-modal="true" aria-labelledby="helpTitle">
+        <button class="modal-close" type="button" data-close-help aria-label="Cerrar">×</button>
+        <span class="eyebrow"><span></span> CÓMO JUGAR</span>
+        <h2 id="helpTitle">Sigue la línea.</h2>
+        <div class="help-list">
+          <div><span class="help-icon tap-icon"></span><div><strong>Notas cortas</strong><p>Pulsa la tecla del carril cuando el tile cruce la línea blanca.</p></div></div>
+          <div><span class="help-icon hold-icon"></span><div><strong>Notas largas</strong><p>Mantén la tecla presionada hasta que el cuerpo termine de pasar.</p></div></div>
+          <div><span class="help-icon keys-icon">D</span><div><strong>Teclado</strong><p>Usa D · F · J · K. En móvil, toca los cuatro pads inferiores.</p></div></div>
+          <div><span class="help-icon music-icon">♪</span><div><strong>Tu música</strong><p>Importa un audio: el motor detecta el tempo y crea una partida sincronizada.</p></div></div>
+        </div>
+        <button class="btn btn-primary help-close" type="button" data-close-help>Entendido</button>
+        <p class="help-note">Pulsa Esc para pausar. Los ajustes de sonido están siempre arriba.</p>
+      </div>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script type="module" src="js/app.js"></script>
+  </body>
+</html>
