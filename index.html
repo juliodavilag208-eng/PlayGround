@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#101120" />
+  <link rel="icon" href="data:," />
+  <title>PULSO — juega tu música</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="Pulso inicio"><span class="brand-mark"><i></i><i></i><i></i><i></i></span><span>PULSO<span class="brand-dot">.</span></span></a>
+      <div class="top-center"><span class="live-dot"></span> TU MÚSICA, TU JUEGO</div>
+      <button class="profile" aria-label="Perfil"><span class="profile-avatar">L</span><span class="profile-name">Luna</span><span class="chevron">⌄</span></button>
+    </header>
+
+    <main id="homeView" class="home-view">
+      <section class="hero">
+        <div class="hero-copy">
+          <div class="eyebrow"><span class="sparkle">✳</span> EL RITMO LO PONES TÚ</div>
+          <h1>Escucha.<br><span>Siente.</span> Juega.</h1>
+          <p>Convierte cualquier canción en un reto de ritmo. Importa tu música y deja que PULSO encuentre el beat.</p>
+          <div class="hero-actions">
+            <button class="button button-dark" id="playDemo"><span class="play-icon">▶</span> Jugar demo <span class="button-arrow">↗</span></button>
+            <button class="button button-light" id="uploadButton"><span class="upload-icon">＋</span> Importar canción</button>
+          </div>
+          <div class="hero-foot"><span class="avatar-stack"><i>♫</i><i>♪</i><i>♫</i></span><span><b>Tu biblioteca,</b> tus reglas</span><span class="foot-divider"></span><span>100% privado</span></div>
+        </div>
+        <div class="hero-art" aria-label="Ilustración de notas musicales">
+          <div class="art-halo"></div><div class="art-disc"><div class="disc-groove groove-one"></div><div class="disc-groove groove-two"></div><div class="disc-center"><span>♫</span></div></div>
+          <div class="art-note note-one">♪</div><div class="art-note note-two">♫</div><div class="art-orbit orbit-one"></div><div class="art-orbit orbit-two"></div>
+          <div class="float-chip chip-bpm"><span class="chip-icon">♩</span><span><b>128</b><small>BPM</small></span><span class="chip-spark">↗</span></div>
+          <div class="float-chip chip-perfect"><span class="perfect-star">✦</span><span><b>¡Perfecto!</b><small>COMBO ×12</small></span></div>
+          <div class="art-caption">EL BEAT ESTÁ<br><b>EN TUS MANOS</b><span>✳</span></div>
+          <div class="art-bars"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        </div>
+        <div class="hero-counter"><b>01</b><span>———</span><small>03</small></div>
+      </section>
+
+      <section class="library-section">
+        <div class="section-heading"><div><div class="section-kicker">TU ESPACIO DE JUEGO</div><h2>¿Qué suena hoy?</h2></div><button class="text-button" id="browseUpload">Ver mi biblioteca <span>↗</span></button></div>
+        <div class="track-grid">
+          <button class="track-card demo-card" id="demoCard"><span class="track-cover cover-demo"><span class="cover-sun"></span><span class="cover-lines">PULSO<br><b>ORIGINAL</b></span><span class="cover-note">♫</span></span><span class="track-info"><b>Neon Dreams</b><small>PULSO Original <i>·</i> 1:02</small></span><span class="track-play">▶</span></button>
+          <button class="track-card upload-card" id="emptyUpload"><span class="empty-cover"><span>＋</span></span><span class="track-info"><b>Añade una canción</b><small>MP3, WAV, M4A y más</small></span><span class="track-add">＋</span></button>
+          <div class="tip-card"><span class="tip-icon">✳</span><div><b>Elige tu nivel</b><p>Cada dificultad añade notas, sin perder el ritmo.</p><button id="tipDifficulty">Descubre cómo <span>→</span></button></div><span class="tip-decoration">♫</span></div>
+        </div>
+      </section>
+      <footer class="home-footer"><span>HECHO PARA SENTIR EL BEAT <i>✳</i></span><span>Tu audio nunca sale de tu dispositivo.</span></footer>
+    </main>
+
+    <section id="gameView" class="game-view hidden" aria-label="Juego de ritmo">
+      <div class="game-topline"><button id="backHome" class="back-button"><span>←</span> Volver</button><div class="now-playing"><span class="equalizer"><i></i><i></i><i></i><i></i></span><span><small>AHORA SUENA</small><b id="playingTitle">Neon Dreams</b></span></div><button id="pauseButton" class="pause-button" aria-label="Pausar">Ⅱ</button></div>
+      <div class="game-content">
+        <div class="game-side">
+          <div class="game-label"><span class="live-dot"></span> MODO RITMO</div><h2 id="gameSongTitle">Neon<br>Dreams</h2><p id="gameSongArtist">PULSO ORIGINAL</p>
+          <div class="difficulty-wrap"><span class="difficulty-label">DIFICULTAD</span><div class="difficulty-options"><button data-difficulty="easy" class="difficulty active"><span class="diff-dots">●○○</span><b>Suave</b></button><button data-difficulty="normal" class="difficulty"><span class="diff-dots">●●○</span><b>Ritmo</b></button><button data-difficulty="hard" class="difficulty"><span class="diff-dots">●●●</span><b>Épico</b></button></div></div>
+          <div class="stats-row"><div><small>PUNTOS</small><b id="score">000000</b></div><div><small>COMBO</small><b><span id="combo">0</span><i>×</i></b></div><div><small>PRECISIÓN</small><b id="accuracy">—%</b></div></div>
+          <div class="progress-block"><div class="progress-copy"><span>PROGRESO</span><b id="timeLabel">0:00 <i>/</i> 1:02</b></div><div class="progress-track"><i id="progressFill"></i></div></div>
+          <div class="game-hint"><span>↘</span><div><b>¡Sigue el ritmo!</b><small>Toca las notas justo al llegar a la línea.</small></div></div>
+        </div>
+        <div class="playfield-wrap"><div class="playfield-head"><span><i class="field-dot"></i> <span id="fieldDifficulty">SUAVE</span></span><span class="bpm-pill">♩ <b id="bpmValue">128</b> BPM</span></div><div class="playfield" id="playfield"><canvas id="gameCanvas" aria-label="Carriles de notas. Toca o usa las teclas D, F, J, K"></canvas><div class="lane-keys"><span>D</span><span>F</span><span>J</span><span>K</span></div><div class="hit-line"></div><div class="tap-hint" id="tapHint"><span>TOCA PARA EMPEZAR</span><i>↓</i></div><div class="countdown hidden" id="countdown">3</div><div class="pause-overlay hidden" id="pauseOverlay"><span>Ⅱ</span><b>PAUSA</b><small>Pulsa para continuar</small><button id="resumeButton">Continuar <span>▶</span></button></div><div class="result-overlay hidden" id="resultOverlay"><div class="result-star">✦</div><small>RETO COMPLETADO</small><b id="resultScore">000000</b><span id="resultMessage">¡Buen ritmo!</span><button id="againButton">Jugar otra vez <span>↻</span></button></div></div><div class="field-foot"><span>TOCA LOS CARRILES</span><span class="keyboard-hint">O USA <b>D</b> <b>F</b> <b>J</b> <b>K</b></span></div></div>
+      </div>
+    </section>
+    <input type="file" id="audioInput" accept="audio/*,.mp3,.wav,.m4a,.aac,.ogg,.flac" hidden />
+    <div id="toast" class="toast" role="status"></div>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
