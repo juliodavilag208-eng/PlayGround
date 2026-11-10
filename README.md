@@ -16,12 +16,12 @@ Then open `http://localhost:3002`.
 
 | Action | Keyboard | Touch |
 | --- | --- | --- |
-| Lane 1 | `D` | Left pad |
-| Lane 2 | `F` | Second pad |
-| Lane 3 | `J` | Third pad |
-| Lane 4 | `K` | Right pad |
+| Lane 1 | `D` | Tap the left lane near the line |
+| Lane 2 | `F` | Tap the second lane near the line |
+| Lane 3 | `J` | Tap the third lane near the line |
+| Lane 4 | `K` | Tap the right lane near the line |
 | Pause / resume | `Esc` | Pause button |
-| Hold notes | Keep the key or pad pressed | Keep the pad pressed |
+| Hold notes | Keep the key pressed | Keep the finger on the lane |
 
 ## Features
 
@@ -30,7 +30,7 @@ Then open `http://localhost:3002`.
 - **Automatic charting.** Built-in tracks are composed procedurally; imported audio is analyzed locally with Web Audio/FFT onset detection and autocorrelation tempo estimation.
 - **Local-only imports.** Audio is decoded and charted in the browser. The file is never uploaded, and imported tracks live for the current session.
 - **Persistent best scores.** Best score and accuracy per track/difficulty are stored in `localStorage`.
-- **Desktop and mobile.** Four touch pads, safe-area-aware layout, responsive HUD, pause, retry, and results screens.
+- **Desktop and mobile.** Tap directly around the judgement line on touch screens, with a safe-area-aware layout, responsive HUD, pause, retry, and results screens.
 
 ## Difficulties
 

@@ -33,6 +33,7 @@ const state = {
   muted: false,
   pendingUpload: null,
   activePointerLanes: [new Set(), new Set(), new Set(), new Set()],
+  pointerLanes: new Map(),
   keyboardLanes: new Set(),
   currentResult: null,
   screen: 'home',
@@ -80,10 +81,10 @@ const elements = {
   toast: $('#toast'),
   countdown: $('#countdown'),
   countdownNumber: $('#countdownNumber'),
+  stage: $('#stage'),
   gameTrackTitle: $('#gameTrackTitle'),
   gameTrackArtist: $('#gameTrackArtist'),
   gameDiffPill: $('#gameDiffPill'),
-  keyPads: $$('.key-pad'),
   soundButtons: $$('.sound-toggle'),
   helpButton: $('#helpButton'),
 }
@@ -282,7 +283,7 @@ async function startRun() {
 function openPause() {
   if (!game.running || game.paused) return
   game.pause()
-  clearPressedPads()
+  clearPressedInput()
   elements.pauseOverlay.hidden = false
   elements.pauseOverlay.querySelector('[data-pause-resume]')?.focus({ preventScroll: true })
 }
@@ -306,7 +307,7 @@ function restartRun() {
 
 function goHome() {
   game.stop()
-  clearPressedPads()
+  clearPressedInput()
   hideOverlays()
   elements.countdown.classList.add('is-hidden')
   showScreen('home')
@@ -504,26 +505,25 @@ function addImportedTrack(playNow = false) {
   if (playNow) startRun()
 }
 
-function clearPressedPads() {
-  elements.keyPads.forEach((pad) => pad.classList.remove('is-pressed'))
+function clearPressedInput() {
   state.activePointerLanes.forEach((set) => set.clear())
+  state.pointerLanes.clear()
   state.keyboardLanes.clear()
 }
 
-function pressPad(lane, pointerId = null) {
-  const pad = elements.keyPads[lane]
-  if (pointerId !== null) state.activePointerLanes[lane].add(pointerId)
-  pad.classList.add('is-pressed')
+function pressStagePointer(lane, pointerId) {
+  state.pointerLanes.set(pointerId, lane)
+  state.activePointerLanes[lane].add(pointerId)
   game.pressLane(lane)
 }
 
-function releasePad(lane, pointerId = null) {
-  if (pointerId !== null) state.activePointerLanes[lane].delete(pointerId)
+function releaseStagePointer(pointerId) {
+  const lane = state.pointerLanes.get(pointerId)
+  if (lane === undefined) return
+  state.pointerLanes.delete(pointerId)
+  state.activePointerLanes[lane].delete(pointerId)
   const stillHeld = state.activePointerLanes[lane].size > 0 || state.keyboardLanes.has(lane)
-  if (!stillHeld) {
-    elements.keyPads[lane].classList.remove('is-pressed')
-    game.releaseLane(lane)
-  }
+  if (!stillHeld) game.releaseLane(lane)
 }
 
 function updateSoundButtons() {
@@ -617,29 +617,26 @@ function initEvents() {
     event.currentTarget.classList.toggle('is-muted', isMuted())
   })
 
-  elements.keyPads.forEach((pad) => {
-    const lane = Number(pad.dataset.lane)
-    pad.addEventListener('pointerdown', (event) => {
-      event.preventDefault()
-      try {
-        pad.setPointerCapture?.(event.pointerId)
-      } catch {
-        // Pointer capture can fail for synthetic or already-released pointers.
-      }
-      if (state.activePointerLanes[lane].size === 0 && !state.keyboardLanes.has(lane)) {
-        pressPad(lane, event.pointerId)
-      } else {
-        state.activePointerLanes[lane].add(event.pointerId)
-      }
-    })
-    const release = (event) => {
-      event.preventDefault()
-      releasePad(lane, event.pointerId)
+  elements.stage.addEventListener('pointerdown', (event) => {
+    if (state.screen !== 'game' || game.paused) return
+    if (event.pointerType === 'mouse' && event.button !== 0) return
+    const lane = game.laneAtPoint(event.clientX, event.clientY)
+    if (lane < 0) return
+    event.preventDefault()
+    try {
+      elements.stage.setPointerCapture?.(event.pointerId)
+    } catch {
+      // Pointer capture can fail for synthetic or already-released pointers.
     }
-    pad.addEventListener('pointerup', release)
-    pad.addEventListener('pointercancel', release)
-    pad.addEventListener('contextmenu', (event) => event.preventDefault())
+    pressStagePointer(lane, event.pointerId)
   })
+  const releaseStagePointerEvent = (event) => {
+    event.preventDefault()
+    releaseStagePointer(event.pointerId)
+  }
+  elements.stage.addEventListener('pointerup', releaseStagePointerEvent)
+  elements.stage.addEventListener('pointercancel', releaseStagePointerEvent)
+  elements.stage.addEventListener('contextmenu', (event) => event.preventDefault())
 
   window.addEventListener('keydown', (event) => {
     if (!elements.importModal.hidden) {
@@ -664,7 +661,6 @@ function initEvents() {
     if (lane === undefined || event.repeat) return
     event.preventDefault()
     state.keyboardLanes.add(lane)
-    elements.keyPads[lane].classList.add('is-pressed')
     game.pressLane(lane)
   })
 
@@ -672,9 +668,8 @@ function initEvents() {
     const lane = { KeyD: 0, KeyF: 1, KeyJ: 2, KeyK: 3 }[event.code]
     if (lane === undefined) return
     state.keyboardLanes.delete(lane)
-    if (!state.activePointerLanes[lane].size) {
-      elements.keyPads[lane].classList.remove('is-pressed')
-      if (state.screen === 'game' && !game.paused) game.releaseLane(lane)
+    if (!state.activePointerLanes[lane].size && state.screen === 'game' && !game.paused) {
+      game.releaseLane(lane)
     }
   })
 

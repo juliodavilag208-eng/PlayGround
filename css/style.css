@@ -1556,6 +1556,9 @@ p {
     radial-gradient(ellipse 70% 75% at 50% 112%, rgba(28, 66, 103, 0.25), transparent 62%),
     linear-gradient(180deg, #080b13, #060810);
   box-shadow: 0 24px 70px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .stage::after {
@@ -1626,83 +1629,6 @@ p {
 .countdown.is-go strong {
   color: var(--accent);
   text-shadow: 0 0 40px rgba(86, 230, 255, 0.44);
-}
-
-.key-strip {
-  width: 100%;
-  max-width: 900px;
-  height: 69px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 8px;
-  flex: 0 0 auto;
-}
-
-.key-pad {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 2px;
-  overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.09);
-  border-radius: 13px;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.035), transparent),
-    rgba(9, 13, 22, 0.82);
-  color: var(--text-soft);
-  touch-action: none;
-  user-select: none;
-  -webkit-user-select: none;
-  transition: transform 0.07s ease, background 0.12s ease, border-color 0.12s ease;
-}
-
-.key-pad::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  right: 15%;
-  left: 15%;
-  height: 2px;
-  border-radius: 0 0 2px 2px;
-  background: var(--lane-color);
-  opacity: 0.65;
-  box-shadow: 0 0 12px var(--lane-color);
-}
-
-.key-pad:hover {
-  border-color: rgba(255, 255, 255, 0.16);
-}
-
-.key-pad.is-pressed {
-  border-color: color-mix(in srgb, var(--lane-color) 48%, transparent);
-  background:
-    linear-gradient(180deg, color-mix(in srgb, var(--lane-color) 16%, transparent), transparent),
-    rgba(9, 13, 22, 0.9);
-  transform: translateY(2px);
-}
-
-.key-pad.is-pressed::before {
-  opacity: 1;
-  box-shadow: 0 0 20px var(--lane-color);
-}
-
-.key-letter {
-  color: var(--text);
-  font-family: var(--font-mono);
-  font-size: 19px;
-  font-weight: 700;
-  line-height: 1;
-  letter-spacing: 0.02em;
-}
-
-.key-label {
-  color: var(--muted-deep);
-  font-family: var(--font-mono);
-  font-size: 6.5px;
-  letter-spacing: 0.13em;
 }
 
 /* Overlays and modal cards */
@@ -2996,23 +2922,6 @@ p {
     font-size: 6px;
   }
 
-  .key-strip {
-    height: 62px;
-    gap: 6px;
-  }
-
-  .key-pad {
-    border-radius: 11px;
-  }
-
-  .key-letter {
-    font-size: 17px;
-  }
-
-  .key-label {
-    font-size: 6px;
-  }
-
   .toast {
     font-size: 7px;
   }
@@ -3158,9 +3067,6 @@ p {
     min-height: 52px;
   }
 
-  .key-strip {
-    height: 60px;
-  }
 }
 
 @media (max-height: 520px) and (orientation: landscape) {
@@ -3188,18 +3094,6 @@ p {
 
   .hud-stat strong {
     font-size: 13px;
-  }
-
-  .key-strip {
-    height: 52px;
-  }
-
-  .key-letter {
-    font-size: 15px;
-  }
-
-  .key-label {
-    display: none;
   }
 
   .countdown strong {

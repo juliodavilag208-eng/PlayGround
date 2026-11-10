@@ -80,7 +80,9 @@ export class RhythmGame {
     this.context.setTransform(this.dpr, 0, 0, this.dpr, 0, 0)
     this.padding = clamp(width * 0.032, 10, 30)
     this.laneWidth = (width - this.padding * 2) / 4
-    this.judgeY = height - 48
+    this.judgeY = Math.round(height - clamp(height * 0.22, 96, 160))
+    this.hitZoneAbove = Math.round(clamp(height * 0.16, 64, 132))
+    this.hitZoneBelow = Math.round(clamp(height * 0.1, 48, 76))
     this.travelDistance = this.judgeY + 90
     this.calculateSpeed()
     if (this.running) this.draw()
@@ -529,6 +531,19 @@ export class RhythmGame {
     return this.padding + this.laneWidth * (lane + 0.5)
   }
 
+  laneAtPoint(clientX, clientY) {
+    if (!this.canvas || !this.width) return -1
+    const rect = this.canvas.getBoundingClientRect()
+    const x = clientX - rect.left
+    const y = clientY - rect.top
+    if (y < this.judgeY - this.hitZoneAbove || y > this.judgeY + this.hitZoneBelow) {
+      return -1
+    }
+    if (x < this.padding || x > this.width - this.padding) return -1
+    const lane = Math.floor((x - this.padding) / this.laneWidth)
+    return lane >= 0 && lane < 4 ? lane : -1
+  }
+
   laneMetrics(lane) {
     const width = this.laneWidth
     const center = this.laneCenter(lane)
@@ -562,6 +577,7 @@ export class RhythmGame {
     this.drawLaneBackground(context, width, height)
     this.drawBeatGrid(context, songTime)
     this.drawLaneGlows(context, height)
+    this.drawHitZone(context)
 
     const visible = []
     for (const note of this.notes) {
@@ -633,6 +649,19 @@ export class RhythmGame {
       context.lineTo(this.width - this.padding - 2, y)
       context.stroke()
     }
+    context.restore()
+  }
+
+  drawHitZone(context) {
+    const top = this.judgeY - this.hitZoneAbove
+    const bottom = this.judgeY + this.hitZoneBelow
+    const gradient = context.createLinearGradient(0, top, 0, bottom)
+    gradient.addColorStop(0, 'rgba(86, 230, 255, 0)')
+    gradient.addColorStop(0.7, 'rgba(86, 230, 255, 0.035)')
+    gradient.addColorStop(1, 'rgba(86, 230, 255, 0.012)')
+    context.save()
+    context.fillStyle = gradient
+    context.fillRect(this.padding, top, this.width - this.padding * 2, bottom - top)
     context.restore()
   }
 
